@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{42EF55C4-C51E-A456-14BB-8040C43A6EE1}|">
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/First Person Drifter Controller/Scripts/LockMouse.cs">
+    <Files>
+      <File FileName="Assets/First Person Drifter Controller/info.txt" Line="42" Column="73" />
+      <File FileName="Assets/First Person Drifter Controller/Scripts/MouseLook.cs" Line="46" Column="50" />
+      <File FileName="Assets/First Person Drifter Controller/Scripts/LockMouse.cs" Line="8" Column="35" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
