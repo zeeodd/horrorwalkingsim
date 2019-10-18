@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerInteract : MonoBehaviour
 {
     public Camera playerCamera;
+    private Transform lastHit;
 
     // Start is called before the first frame update
     void Start()
@@ -24,18 +25,27 @@ public class PlayerInteract : MonoBehaviour
             // Get the hit object's transform
             Transform objectHit = hit.transform;
 
-            // Get the distance between the two objects
-            float dist = Vector3.Distance(objectHit.position, transform.position);
+            if (objectHit.tag == "Interactive")
+            {
 
-            if (objectHit.tag == "Interactive" && dist <= 2.5f) 
-            {
-                objectHit.GetComponent<ObjectInteract>().isBeingInteractedWith = true;
-            }
-            else
-            {
-                if (objectHit.GetComponent<ObjectInteract>() != null)
+                // Get the distance between the two objects
+                float dist = Vector3.Distance(objectHit.position, transform.position);
+
+                if (dist <= 2.5f)
+                {
+                    objectHit.GetComponent<ObjectInteract>().isBeingInteractedWith = true;
+                    lastHit = objectHit;
+                }
+                else
                 {
                     objectHit.GetComponent<ObjectInteract>().isBeingInteractedWith = false;
+                }
+            } 
+            else
+            {
+                if (lastHit != null && lastHit.GetComponent<ObjectInteract>() != null)
+                {
+                    lastHit.GetComponent<ObjectInteract>().isBeingInteractedWith = false;
                 }
             }
 
