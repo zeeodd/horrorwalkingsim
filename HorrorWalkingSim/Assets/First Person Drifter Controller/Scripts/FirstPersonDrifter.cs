@@ -52,6 +52,9 @@ public class FirstPersonDrifter: MonoBehaviour
     private Vector3 contactPoint;
     private bool playerControl = false;
     private int jumpTimer;
+
+    StaminaBar stb;
+    public float stamRate = 1.5f;
  
     void Start()
     {
@@ -61,6 +64,7 @@ public class FirstPersonDrifter: MonoBehaviour
         rayDistance = controller.height * .5f + controller.radius;
         slideLimit = controller.slopeLimit - .1f;
         jumpTimer = antiBunnyHopFactor;
+        stb = GetComponent<StaminaBar>();
     }
  
     void FixedUpdate() {
@@ -92,9 +96,20 @@ public class FirstPersonDrifter: MonoBehaviour
                     FallingDamageAlert (fallStartLevel - myTransform.position.y);
             }
  
-            if( enableRunning )
+            if( enableRunning)
             {
-            	speed = Input.GetButton("Run")? runSpeed : walkSpeed;
+            	//speed = Input.GetButton("Run")? runSpeed : walkSpeed;
+
+                if (Input.GetButton("Run") && stb.currStamina >= 5f)
+                {
+                    stb.depleteStamina(stamRate);
+                    speed = runSpeed;
+                }
+                else
+                {
+                    speed = walkSpeed;
+                }
+
             }
  
             // If sliding (and it's allowed), or if we're on an object tagged "Slide", get a vector pointing down the slope we're on
