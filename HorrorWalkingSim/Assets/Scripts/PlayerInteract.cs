@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour
 {
-    public Camera playerCamera;
+    public Camera playerCamera; // Player's camera
     private Transform lastHit;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -25,12 +25,14 @@ public class PlayerInteract : MonoBehaviour
             // Get the hit object's transform
             Transform objectHit = hit.transform;
 
+            // Check if the object is interactable
             if (objectHit.tag == "Interactive")
             {
 
-                // Get the distance between the two objects
+                // Then check the distance between the two objects
                 float dist = Vector3.Distance(objectHit.position, transform.position);
 
+                // If the player is close enough, allow interaction
                 if (dist <= 2.5f)
                 {
                     objectHit.GetComponent<ObjectInteract>().isBeingInteractedWith = true;
