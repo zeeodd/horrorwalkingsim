@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
     // Make the enemy a NavMesh agent
     NavMeshAgent agent;
 
-    private enum States { Idle, Patrol, Suspicous, Chasing };
+    private enum States { Idle, Patrol, Suspicous, Chasing, Testing };
     private States currentState;
 
     void Start()
@@ -45,7 +45,8 @@ public class EnemyController : MonoBehaviour
 
         inVisionTime = inVisionTimeInit;
 
-        currentState = States.Patrol;
+        // TODO: CHANGE THIS 
+        currentState = States.Testing;
     }
 
     void Update()
@@ -57,6 +58,7 @@ public class EnemyController : MonoBehaviour
             case States.Patrol: Patrol(); break;
             case States.Suspicous: Suspicious(); break;
             case States.Chasing: Chasing(); break;
+            case States.Testing: Testing(); break;
             default: break;
         }
 
@@ -212,6 +214,18 @@ public class EnemyController : MonoBehaviour
         {
             currentState = States.Suspicous;
         }
+    }
+
+    void Testing()
+    {
+        // Change State
+        currentState = States.Testing;
+
+        // Control speed and animation
+        speed = 0;
+        anim.SetBool("isIdle", true);
+        anim.SetBool("isWalking", false);
+        anim.SetBool("isRunning", false);
     }
 
     Vector3 GetNewDestination()
