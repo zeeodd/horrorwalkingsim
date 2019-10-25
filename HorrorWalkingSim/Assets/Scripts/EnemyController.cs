@@ -5,14 +5,18 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    // Various enemy control vars
+    // == Various enemy control vars ==
+    // Speed vars
     private float speed;
     public float w_speed = 4.0f;
     public float r_speed = 10.0f;
+    // These vars control the scanning of the enemy
     public int visionDist = 25;
-    public float visionRadius = 35.0f;
-
-    private float idleTime = 1.5f;
+    public float visionRadius = 60.0f;
+    private float inVisionTime;
+    private float inVisionTimeInit = 5.0f;
+    // These control the idle/patrol vars
+    private float idleTime = 1.0f;
     private float destRadius = 5.0f;
     private bool atDestination = false;
     private bool setDestination = false;
@@ -39,12 +43,14 @@ public class EnemyController : MonoBehaviour
         col_size = GetComponent<CapsuleCollider>();
         agent = GetComponent<NavMeshAgent>();
 
+        inVisionTime = inVisionTimeInit;
+
         currentState = States.Patrol;
     }
 
     void Update()
     {
-
+        // State Controller 
         switch (currentState)
         {
             case States.Idle: Idle(); break;
@@ -59,56 +65,13 @@ public class EnemyController : MonoBehaviour
         // Keep updating speed to controlled speed vars
         GetComponent<NavMeshAgent>().speed = speed;
 
-        // Raycast controls
-        //RaycastHit hit;
-        //Vector3 forward = transform.TransformDirection(Vector3.forward);
-        //Ray ray = new Ray(transform.position + Vector3.up, forward);
-        //Debug.DrawRay(ray.origin, ray.direction * visionDist, Color.yellow);
-
-        //if (Physics.Raycast(ray, out hit, visionDist))
-        //{
-        //    // Get the hit object's transform
-        //    Transform objectHit = hit.transform;
-
-        //    if (objectHit.tag == "Player")
-        //    {
-        //        print("Hit Player");
-        //    }
-        //}
-
-        //TODO: 1. Raycast (maybe a cone col?) from the enemy
-        //      2. Rotate raycast as enemy walks
-        //      3. Have enemy always be walking in general direction of player
-        //      4. Randomize player location so it's not 100% direct
-        //      5. If enemy sees player, break path and run toward player
-
-        // Ontrigger for when entering the house
-        // Use navmeshagent.warp to teleport
-        // Vector3.Angle
-        // RE2 Remake
-
-        // Find player location
-        //float step = speed * Time.deltaTime; // calculate distance to move
-        //transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
-        //transform.forward = -player.transform.forward;
-
-        // Check if the position of the cube and sphere are approximately equal.
-        //if (Vector3.Distance(transform.position, player.transform.position) <= 10.0f)
-        //{
-        //    speed = r_speed;
-
-        //    anim.SetBool("isIdle", false);
-        //    anim.SetBool("isWalking", false);
-        //    anim.SetBool("isRunning", true);
-        //    print("IN RANGE");
-
-        //}
     }
 
     void Idle()
     {
         // Change State
         currentState = States.Idle;
+        print("IDLE NOW");
 
         // Control speed and animation
         speed = 0;
@@ -118,6 +81,11 @@ public class EnemyController : MonoBehaviour
 
         // =============================
 
+        if(inVisionTime < inVisionTimeInit)
+        {
+            inVisionTime = inVisionTimeInit;
+        }
+
         VisualScan();
         Invoke("ResetDestination", idleTime);
     }
@@ -126,6 +94,7 @@ public class EnemyController : MonoBehaviour
     {
         // Change State
         currentState = States.Patrol;
+        print("PATROL NOW");
 
         // Control speed and animation
         speed = w_speed;
@@ -178,20 +147,52 @@ public class EnemyController : MonoBehaviour
     {
         // Change State
         currentState = States.Suspicous;
+        print("SUSPICIOUS NOW");
 
         // Control speed and animation
-        speed = 0;
+        speed = w_speed;
         anim.SetBool("isIdle", true);
         anim.SetBool("isWalking", false);
         anim.SetBool("isRunning", false);
 
         // =============================
+
+        // Keep chasing
+        agent.SetDestination(player.transform.position);
+
+        if (inVisionTime < inVisionTimeInit)
+        {
+            inVisionTime = inVisionTimeInit;
+        }
+
+        // If the player is within the vision radius and close enough, raycast!
+        RaycastHit hit;
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Ray ray = new Ray(transform.position + Vector3.up, forward);
+        Debug.DrawRay(ray.origin, ray.direction * visionDist, Color.yellow);
+
+        if (Physics.Raycast(ray, out hit, visionDist))
+        {
+            // Get the hit object's transform
+            Transform objectHit = hit.transform;
+
+            if (objectHit.tag == "Player")
+            {
+                currentState = States.Chasing;
+            }
+            else
+            {
+                currentState = States.Idle;
+            }
+        }
+
     }
 
     void Chasing()
     {
         // Change State
         currentState = States.Chasing;
+        print("CHASING NOW");
 
         // Control speed and animation
         speed = r_speed;
@@ -201,7 +202,16 @@ public class EnemyController : MonoBehaviour
 
         // =============================
 
-        print("fuck");
+        inVisionTime -= 1.0f * Time.deltaTime;
+
+        if (inVisionTime > 0f)
+        {
+            agent.SetDestination(player.transform.position);
+        }
+        else
+        {
+            currentState = States.Suspicous;
+        }
     }
 
     Vector3 GetNewDestination()
