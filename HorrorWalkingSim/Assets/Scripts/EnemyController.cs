@@ -62,7 +62,7 @@ public class EnemyController : MonoBehaviour
             default: break;
         }
 
-        print(currentState);
+        // print(currentState);
 
         // Keep updating speed to controlled speed vars
         GetComponent<NavMeshAgent>().speed = speed;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class OpenDoor : MonoBehaviour
 {
+    bool hasHouseKey = true;
+
     // Start is called before the first frame update
     void Start()
     {
