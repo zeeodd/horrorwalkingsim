@@ -46,7 +46,7 @@ public class EnemyController : MonoBehaviour
         inVisionTime = inVisionTimeInit;
 
         // TODO: CHANGE THIS 
-        currentState = States.Testing;
+        currentState = States.Patrol;
     }
 
     void Update()
