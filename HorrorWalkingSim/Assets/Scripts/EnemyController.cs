@@ -65,6 +65,7 @@ public class EnemyController : MonoBehaviour
         if(player.GetComponent<PlayerInteract>().exitingMaze)
         {
             currentState = States.Idle;
+            player.GetComponent<PlayerInteract>().exitingMaze = false;
         }
 
         // Keep updating speed to controlled speed vars

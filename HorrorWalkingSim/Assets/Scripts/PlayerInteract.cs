@@ -67,6 +67,7 @@ public class PlayerInteract : MonoBehaviour
             animatedCamera.gameObject.SetActive(true);
             playerCamera.GetComponent<Camera>().enabled = false;
             playerCamera.gameObject.SetActive(false);
+            GetComponent<FirstPersonDrifter>().enabled = false;
             animatedCamera.GetComponent<Camera>().enabled = true;
             animating = true;
             lastTrigger = other;
@@ -76,21 +77,25 @@ public class PlayerInteract : MonoBehaviour
         if (other.name == "TriggerPoint2")
         {
             tryingToMoveTowardEnemy = true;
+            lastTrigger = other;
         }
 
         if (other.name == "TriggerPoint3")
         {
             exitingMaze = true;
+            Destroy(lastTrigger);
         }
     }
 
     void AnimateOff()
     {
-        lastTrigger.isTrigger = false;
+        Destroy(lastTrigger);
+        //lastTrigger.isTrigger = false;
         animating = false;
         playerCamera.gameObject.SetActive(true);
         animatedCamera.GetComponent<Camera>().enabled = false;
         animatedCamera.gameObject.SetActive(false);
         playerCamera.GetComponent<Camera>().enabled = true;
+        GetComponent<FirstPersonDrifter>().enabled = true;
     }
 }
