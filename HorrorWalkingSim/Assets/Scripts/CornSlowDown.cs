@@ -4,9 +4,20 @@ using UnityEngine;
 
 public class CornSlowDown : MonoBehaviour
 {
-    public float slowWalk;
-    public float slowRun;
+    public bool slowingDown = false;
     private Collider lastCornTrigger;
+    private float normalWalk;
+    private float normalRun;
+    private float slowWalk;
+    private float slowRun;
+
+    private void Start()
+    {
+        normalWalk = GetComponent<FirstPersonDrifter>().walkSpeed;
+        normalRun = GetComponent<FirstPersonDrifter>().runSpeed;
+        slowWalk = GetComponent<FirstPersonDrifter>().walkSpeed / 2.0f;
+        slowRun = GetComponent<FirstPersonDrifter>().runSpeed / 2.0f;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,6 +27,7 @@ public class CornSlowDown : MonoBehaviour
         {
             GetComponent<FirstPersonDrifter>().walkSpeed = slowWalk;
             GetComponent<FirstPersonDrifter>().runSpeed = slowRun;
+            slowingDown = true;
         }
     }
 
@@ -23,8 +35,9 @@ public class CornSlowDown : MonoBehaviour
     {
         if (lastCornTrigger == other)
         {
-            GetComponent<FirstPersonDrifter>().walkSpeed = 6;
-            GetComponent<FirstPersonDrifter>().runSpeed = 10;
+            GetComponent<FirstPersonDrifter>().walkSpeed = normalWalk;
+            GetComponent<FirstPersonDrifter>().runSpeed = normalRun;
+            slowingDown = false;
         }
     }
 }

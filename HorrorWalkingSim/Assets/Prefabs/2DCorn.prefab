@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0324187c23e5f43db9b2820cb3a19ac6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 100002, guid: 25e3ab2d6992a48f3ab7455baed062e0, type: 3}
+  animatedCamera: {fileID: 7812441009237855529, guid: 26c620f52a79f4c94892e6c7bf65b74b,
+    type: 3}
 --- !u!1 &2726722141866852456
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2726722142190345622
 Transform:
   m_ObjectHideFlags: 0
@@ -187,7 +189,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2726722142190345621}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

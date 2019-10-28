@@ -16,6 +16,7 @@ public class CameraFadeOnStart : MonoBehaviour
 			Fade();
 		}
 	}
+
 	
 	public void Fade()
 	{

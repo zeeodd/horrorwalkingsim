@@ -62,7 +62,10 @@ public class EnemyController : MonoBehaviour
             default: break;
         }
 
-        // print(currentState);
+        if(player.GetComponent<PlayerInteract>().exitingMaze)
+        {
+            currentState = States.Idle;
+        }
 
         // Keep updating speed to controlled speed vars
         GetComponent<NavMeshAgent>().speed = speed;

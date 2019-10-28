@@ -7,6 +7,12 @@ public class PlayerInteract : MonoBehaviour
 {
     public Camera playerCamera; // Player's camera
     private Transform lastHit;
+    public Camera animatedCamera;
+
+    public bool animating = false;
+    private Collider lastTrigger;
+    public bool tryingToMoveTowardEnemy = false;
+    public bool exitingMaze = false;
 
     // Start is called before the first frame update
     void Start()
@@ -52,5 +58,39 @@ public class PlayerInteract : MonoBehaviour
             }
 
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name == "TriggerPoint1")
+        {
+            animatedCamera.gameObject.SetActive(true);
+            playerCamera.GetComponent<Camera>().enabled = false;
+            playerCamera.gameObject.SetActive(false);
+            animatedCamera.GetComponent<Camera>().enabled = true;
+            animating = true;
+            lastTrigger = other;
+            Invoke("AnimateOff", 16.0f);
+        }
+
+        if (other.name == "TriggerPoint2")
+        {
+            tryingToMoveTowardEnemy = true;
+        }
+
+        if (other.name == "TriggerPoint3")
+        {
+            exitingMaze = true;
+        }
+    }
+
+    void AnimateOff()
+    {
+        lastTrigger.isTrigger = false;
+        animating = false;
+        playerCamera.gameObject.SetActive(true);
+        animatedCamera.GetComponent<Camera>().enabled = false;
+        animatedCamera.gameObject.SetActive(false);
+        playerCamera.GetComponent<Camera>().enabled = true;
     }
 }

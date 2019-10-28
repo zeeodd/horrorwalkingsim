@@ -5,9 +5,18 @@ using UnityEngine;
 public class LookAtPlayer : MonoBehaviour
 {
     public GameObject player;
+    public Camera animatedCamera;
 
     void Update()
     {
-       transform.forward = player.transform.forward;
+        if(player.GetComponent<PlayerInteract>().animating)
+        {
+            transform.forward = animatedCamera.transform.forward;
+        }
+        else
+        {
+            transform.forward = player.transform.forward;
+        }
     }
+
 }
