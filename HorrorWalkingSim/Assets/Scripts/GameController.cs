@@ -38,29 +38,34 @@ public class GameController : MonoBehaviour
     {
         if (player.GetComponent<CornSlowDown>().slowingDown)
         {
+            Color tempColor = text.color;
+            tempColor.a = 1.0f;
+            text.color = tempColor;
             text.text = "Maybe I should stay on the path... For now...";
             text.enabled = true;
-            Invoke("TextFadeOut", 4f);
+            text.CrossFadeAlpha(0f, 3f, true);
         }
 
        if (player.GetComponent<PlayerInteract>().tryingToMoveTowardEnemy)
         {
+            Color tempColor2 = text2.color;
+            tempColor2.a = 1.0f;
+            text2.color = tempColor2;
             text2.text = "Not that way!";
-            text2.CrossFadeAlpha(1.0f, 0.25f, true);
             text2.enabled = true;
-            Invoke("Text2FadeOut", 4f);
+            Invoke("Text2FadeOut", 0f);
             player.GetComponent<PlayerInteract>().tryingToMoveTowardEnemy = false;
         }
     }
 
     void TextFadeOut()
     {
-        text.CrossFadeAlpha(0.0f, 0.25f, true);
+        text.CrossFadeAlpha(0.0f, 3f, true);
         text.gameObject.SetActive(false);
     }
 
     void Text2FadeOut()
     {
-        text2.CrossFadeAlpha(0.0f, 0.25f, true);
+        text2.CrossFadeAlpha(0.0f, 0.2f, true);
     }
 }
