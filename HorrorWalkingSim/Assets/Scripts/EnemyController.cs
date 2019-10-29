@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    // Sound vars
+    public AudioClip crowsAudio;
+    public AudioClip stringsAudio;
     // == Various enemy control vars ==
     // Speed vars
     private float speed;
@@ -94,6 +97,7 @@ public class EnemyController : MonoBehaviour
 
     void Patrol()
     {
+        //INSERT CROW SOUNDS HERE
         // Change State
         currentState = States.Patrol;
         print("PATROL NOW");
@@ -192,6 +196,8 @@ public class EnemyController : MonoBehaviour
 
     void Chasing()
     {
+        //INSERT PSYCHO SOUND EFFECT HERE
+        gameObject.GetComponent<AudioSource>().Play();
         // Change State
         currentState = States.Chasing;
         print("CHASING NOW");
