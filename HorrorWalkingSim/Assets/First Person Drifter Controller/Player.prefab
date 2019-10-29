@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 1217749809}
   - component: {fileID: 1217749807}
   - component: {fileID: 3131857550007682768}
+  - component: {fileID: 383029887117822253}
   - component: {fileID: 8247788914669434487}
   m_Layer: 0
   m_Name: Player
@@ -405,6 +406,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currStamina: 0
   slider: {fileID: 0}
+--- !u!114 &383029887117822253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e38211c02de4ea185ec2e4a849028f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  cursorTexture: {fileID: 0}
+  interactText: {fileID: 0}
+  displayText: 
 --- !u!114 &8247788914669434487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +441,11 @@ MonoBehaviour:
   tryingToMoveTowardEnemy: 0
   exitingMaze: 0
   hasKey: 0
+  hasLastKey: 0
+  trigger1: {fileID: 0}
+  trigger2: {fileID: 0}
+  trigger3: {fileID: 0}
+  triggerWall: {fileID: 0}
 --- !u!1 &881428030
 GameObject:
   m_ObjectHideFlags: 0

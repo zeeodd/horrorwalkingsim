@@ -50,7 +50,7 @@ public class EnemyController : MonoBehaviour
         walkingTime = walkingTimeInit;
 
         // TODO: CHANGE THIS 
-        currentState = States.Idle;
+        currentState = States.Testing;
     }
 
     void Update()

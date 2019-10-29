@@ -36,8 +36,9 @@ public class GameController : MonoBehaviour
             child.GetComponent<BoxCollider>().isTrigger = false;
         }
 
-        shovel.gameObject.SetActive(false);
-        dirt.gameObject.SetActive(false);
+        door1.GetComponent<ObjectInteract>().enabled = false;
+        shovel.GetComponent<ObjectInteract>().enabled = false;
+        dirt.GetComponent<ObjectInteract>().enabled = false;
         gate.GetComponent<ObjectInteract>().enabled = false;
 
     }
@@ -66,27 +67,31 @@ public class GameController : MonoBehaviour
             player.GetComponent<PlayerInteract>().tryingToMoveTowardEnemy = false;
         }
 
-        // As the payer picks up various inventory items
-        if (key == null && shovel != null && !shovel.activeSelf)
+        // As the player picks up the KEY
+        if (key == null && door1 != null && door2 != null)
         {
             player.GetComponent<PlayerInteract>().hasKey = true;
+            door1.GetComponent<ObjectInteract>().enabled = true;
         }
 
-        if (door1 == null && shovel != null && !shovel.activeSelf)
+        // As the player opens the DOOR
+        if (door1 == null && shovel != null)
         {
             Destroy(door2);
-            shovel.gameObject.SetActive(true);
-        } else if (door2 == null && shovel != null && !shovel.activeSelf)
+            shovel.GetComponent<ObjectInteract>().enabled = true;
+        } else if (door2 == null && shovel != null)
         {
             Destroy(door1);
-            shovel.gameObject.SetActive(true);
+            shovel.GetComponent<ObjectInteract>().enabled = true;
         }
 
-        if (shovel == null && dirt != null && !dirt.activeSelf)
+        // As the player picks up the SHOVEL
+        if (shovel == null && dirt != null)
         {
-            dirt.gameObject.SetActive(true);
+            dirt.GetComponent<ObjectInteract>().enabled = true;
         }
 
+        // As the player digs up the key
         if (dirt == null && gate != null)
         {
             player.GetComponent<PlayerInteract>().hasLastKey = true;

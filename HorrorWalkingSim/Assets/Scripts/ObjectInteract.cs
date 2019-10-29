@@ -29,9 +29,8 @@ public class ObjectInteract : MonoBehaviour
         // Set emission intensity to 0, interact text inactive and small, cursor to normal
         GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
         interactText.gameObject.SetActive(false);
-        interactText.fontSize = 1;
         interactText.text = displayText;
-        cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(15, 15);
+        cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
     }
 
     // Update is called once per frame
@@ -42,14 +41,11 @@ public class ObjectInteract : MonoBehaviour
         {
 
             // Modify the emission and interaction display text
-            GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 0.5f);
-            interactText.gameObject.SetActive(true);
-            interactText.fontSize = 50;
-
             // Also modify the cursor size
-            curCurrSize = (int)Mathf.Lerp(minSize, maxSize, tCur);
+            GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 0.5f);
+            interactText.fontSize = maxSize;
+            interactText.gameObject.SetActive(true);
             cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMaxSize, curMaxSize);
-            tCur += 5f * Time.deltaTime;
 
             print("INTERACTING!!!");
 
@@ -57,32 +53,22 @@ public class ObjectInteract : MonoBehaviour
             if (Input.GetKey(KeyCode.Mouse0))
             {
                 print("INTERACTED");
+                Destroy(gameObject);
 
-                if (displayText != "OPEN")
+                // Reset everything
+                GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
+                interactText.gameObject.SetActive(false);
+                cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
+
+                if (inventoryIcon != null)
                 {
-                    Destroy(gameObject);
-
-                    // Reset everything
-                    interactText.gameObject.SetActive(false);
-                    interactText.fontSize = 1;
-                    t = 0.0f;
-                    cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
-                    tCur = 0.0f;
-
-                    if (inventoryIcon != null)
-                    {
-                        inventoryIcon.gameObject.SetActive(true);
-                    }
+                    inventoryIcon.gameObject.SetActive(true);
                 }
-                else
+
+                // Check if we're interacting with the door, and if so, disable the key icon
+                if (interactText.text == "OPEN")
                 {
-                    // Reset everything
-                    GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
-                    interactText.gameObject.SetActive(false);
-                    interactText.fontSize = 1;
-                    t = 0.0f;
-                    cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
-                    tCur = 0.0f;
+                    inventoryIcon.gameObject.SetActive(false);
                 }
             }
 
@@ -92,10 +78,7 @@ public class ObjectInteract : MonoBehaviour
             // Reset everything
             GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
             interactText.gameObject.SetActive(false);
-            interactText.fontSize = 1;
-            t = 0.0f;
             cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
-            tCur = 0.0f;
         }
     }
 }

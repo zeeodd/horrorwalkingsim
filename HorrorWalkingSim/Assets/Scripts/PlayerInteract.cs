@@ -57,13 +57,6 @@ public class PlayerInteract : MonoBehaviour
                     objectHit.GetComponent<ObjectInteract>().isBeingInteractedWith = true;
                     lastHit = objectHit;
 
-                    if (hasKey && Input.GetKeyDown(KeyCode.Mouse0) && keyIcon.gameObject.activeSelf)
-                    {
-                        Destroy(objectHit.gameObject);
-                        keyIcon.gameObject.SetActive(false);
-                        hasKey = false;
-                    }
-
                     if (hasLastKey && Input.GetKeyDown(KeyCode.Mouse0))
                     {
                         //TODO: End
@@ -81,55 +74,6 @@ public class PlayerInteract : MonoBehaviour
                 {
                     lastHit.GetComponent<ObjectInteract>().isBeingInteractedWith = false;
                 }
-            }
-
-            if (objectHit.tag == "Note")
-            {
-
-                // Then check the distance between the two objects
-                float dist = Vector3.Distance(objectHit.position, transform.position);
-
-                // If the player is close enough, allow interaction
-                if (dist <= 2.5)
-                {
-                    if (!lookingAtNote)
-                    {
-                        objectHit.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 0.5f);
-                    }
-
-                    lastHit = objectHit;
-
-                    if (Input.GetKeyDown(KeyCode.Mouse0))
-                    {
-
-                        print("CLOSE AND LOOKING");
-                        if (!lookingAtNote)
-                        {
-                            notePos = objectHit.position;
-                            noteRot = objectHit.rotation;
-                            objectHit.rotation = transform.rotation;
-                            Vector3 playerPos = transform.position;
-                            objectHit.position = new Vector3(playerPos.x, playerPos.y + 1f, playerPos.z + 1f);
-                            lookingAtNote = true;
-                            objectHit.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
-                        }
-                        else
-                        {
-                            objectHit.position = notePos;
-                            objectHit.rotation = noteRot;
-                            lookingAtNote = false;
-                        }
-                    }
-
-                }
-                else
-                {
-                    if (lastHit != null && lastHit.GetComponent<Renderer>() != null)
-                    {
-                        objectHit.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
-                    }
-                }
-
             }
 
         }
