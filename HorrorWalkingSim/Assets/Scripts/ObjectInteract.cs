@@ -40,32 +40,51 @@ public class ObjectInteract : MonoBehaviour
         // Check if object is being interacted with
         if (isBeingInteractedWith) 
         {
+
             // Modify the emission and interaction display text
             GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0.25f);
             interactText.gameObject.SetActive(true);
-            interactText.fontSize = (int)Mathf.Lerp(minSize, maxSize, t);
-            t += deltaT * Time.deltaTime;
+            interactText.fontSize = 50;
 
             // Also modify the cursor size
             curCurrSize = (int)Mathf.Lerp(minSize, maxSize, tCur);
             cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMaxSize, curMaxSize);
             tCur += 5f * Time.deltaTime;
 
+            print("INTERACTING!!!");
+
             // Check if player wants to interact with the object
             if (Input.GetKey(KeyCode.Mouse0))
             {
                 print("INTERACTED");
-                Destroy(gameObject);
 
-                // Reset everything
-                interactText.gameObject.SetActive(false);
-                interactText.fontSize = 1;
-                t = 0.0f;
-                cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
-                tCur = 0.0f;
+                if (displayText != "OPEN")
+                {
+                    Destroy(gameObject);
 
-                //TODO: INVENTORY FUNCTION
-                inventoryIcon.gameObject.SetActive(true); // This is temp
+                    // Reset everything
+                    interactText.gameObject.SetActive(false);
+                    interactText.fontSize = 1;
+                    t = 0.0f;
+                    cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
+                    tCur = 0.0f;
+
+                    //TODO: INVENTORY FUNCTION
+                    if (inventoryIcon != null)
+                    {
+                        inventoryIcon.gameObject.SetActive(true); // This is temp
+                    }
+                }
+                else
+                {
+                    // Reset everything
+                    GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
+                    interactText.gameObject.SetActive(false);
+                    interactText.fontSize = 1;
+                    t = 0.0f;
+                    cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
+                    tCur = 0.0f;
+                }
             }
 
         }

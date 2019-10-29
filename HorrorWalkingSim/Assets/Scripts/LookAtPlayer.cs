@@ -12,10 +12,13 @@ public class LookAtPlayer : MonoBehaviour
         if(player.GetComponent<PlayerInteract>().animating)
         {
             transform.forward = animatedCamera.transform.forward;
+            //transform.LookAt(animatedCamera.transform.position);
+
         }
         else
         {
-            transform.forward = player.transform.forward;
+            transform.forward = -player.transform.forward;
+            //transform.LookAt(player.transform.position);
         }
     }
 

@@ -8,11 +8,18 @@ public class PlayerInteract : MonoBehaviour
     public Camera playerCamera; // Player's camera
     private Transform lastHit;
     public Camera animatedCamera;
+    public Image keyIcon;
 
     public bool animating = false;
     private Collider lastTrigger;
     public bool tryingToMoveTowardEnemy = false;
     public bool exitingMaze = false;
+
+    private bool lookingAtNote;
+    private Vector3 notePos;
+    private Quaternion noteRot;
+
+    public bool hasKey = false;
 
     // Start is called before the first frame update
     void Start()
@@ -39,10 +46,16 @@ public class PlayerInteract : MonoBehaviour
                 float dist = Vector3.Distance(objectHit.position, transform.position);
 
                 // If the player is close enough, allow interaction
-                if (dist <= 2.5f)
+                if (dist <= 3.5f)
                 {
                     objectHit.GetComponent<ObjectInteract>().isBeingInteractedWith = true;
                     lastHit = objectHit;
+
+                    if (hasKey && Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        Destroy(objectHit.gameObject);
+                        keyIcon.gameObject.SetActive(false);
+                    }
                 }
                 else
                 {
@@ -55,6 +68,60 @@ public class PlayerInteract : MonoBehaviour
                 {
                     lastHit.GetComponent<ObjectInteract>().isBeingInteractedWith = false;
                 }
+            }
+
+            if (objectHit.tag == "Interactive")
+            {
+
+            }
+
+            if (objectHit.tag == "Note")
+            {
+
+                // Then check the distance between the two objects
+                float dist = Vector3.Distance(objectHit.position, transform.position);
+
+                // If the player is close enough, allow interaction
+                if (dist <= 2.5)
+                {
+                    if (!lookingAtNote)
+                    {
+                        objectHit.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 0.5f);
+                    }
+
+                    lastHit = objectHit;
+
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+
+                        print("CLOSE AND LOOKING");
+                        if (!lookingAtNote)
+                        {
+                            notePos = objectHit.position;
+                            noteRot = objectHit.rotation;
+                            objectHit.rotation = transform.rotation;
+                            Vector3 playerPos = transform.position;
+                            objectHit.position = new Vector3(playerPos.x, playerPos.y + 1f, playerPos.z + 1f);
+                            lookingAtNote = true;
+                            objectHit.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
+                        }
+                        else
+                        {
+                            objectHit.position = notePos;
+                            objectHit.rotation = noteRot;
+                            lookingAtNote = false;
+                        }
+                    }
+
+                }
+                else
+                {
+                    if (lastHit != null && lastHit.GetComponent<Renderer>() != null)
+                    {
+                        objectHit.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0f);
+                    }
+                }
+
             }
 
         }

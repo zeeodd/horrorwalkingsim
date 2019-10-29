@@ -15,8 +15,10 @@ public class EnemyController : MonoBehaviour
     public float visionRadius = 60.0f;
     private float inVisionTime;
     private float inVisionTimeInit = 5.0f;
+    private float walkingTime;
+    private float walkingTimeInit = 10.0f;
     // These control the idle/patrol vars
-    private float idleTime = 1.0f;
+    private float idleTime = 2.0f;
     private float destRadius = 5.0f;
     private bool atDestination = false;
     private bool setDestination = false;
@@ -44,6 +46,7 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
 
         inVisionTime = inVisionTimeInit;
+        walkingTime = walkingTimeInit;
 
         // TODO: CHANGE THIS 
         currentState = States.Testing;
@@ -102,6 +105,7 @@ public class EnemyController : MonoBehaviour
         currentState = States.Patrol;
         print("PATROL NOW");
 
+
         // Control speed and animation
         speed = w_speed;
         anim.SetBool("isIdle", false);
@@ -122,6 +126,15 @@ public class EnemyController : MonoBehaviour
         {
             agent.SetDestination(destination);
             VisualScan();
+
+            walkingTime -= 1.0f * Time.deltaTime;
+
+            if (walkingTime < 0f)
+            {
+                currentState = States.Idle;
+                walkingTime = walkingTimeInit;
+            }
+
         }
 
         // Distance calculations

@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
     public GameObject key;
     public GameObject shovel;
     public GameObject maze;
+    public GameObject door1;
+    public GameObject door2;
     public Text text;
     public Text text2;
 
@@ -31,6 +33,8 @@ public class GameController : MonoBehaviour
             child.GetComponent<BoxCollider>().enabled = true;
             child.GetComponent<BoxCollider>().isTrigger = false;
         }
+
+        shovel.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -55,6 +59,20 @@ public class GameController : MonoBehaviour
             text2.enabled = true;
             Invoke("Text2FadeOut", 0f);
             player.GetComponent<PlayerInteract>().tryingToMoveTowardEnemy = false;
+        }
+
+       if (key == null && !shovel.activeSelf)
+        {
+            player.GetComponent<PlayerInteract>().hasKey = true;
+            //shovel.gameObject.SetActive(true);
+        }
+
+        if (door1 == null)
+        {
+            Destroy(door2);
+        } else if (door2 == null)
+        {
+            Destroy(door1);
         }
     }
 
