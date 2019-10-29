@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
@@ -49,7 +50,7 @@ public class EnemyController : MonoBehaviour
         walkingTime = walkingTimeInit;
 
         // TODO: CHANGE THIS 
-        currentState = States.Testing;
+        currentState = States.Idle;
     }
 
     void Update()
@@ -302,5 +303,13 @@ public class EnemyController : MonoBehaviour
             }
         }
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("Start");
+        }
     }
 }

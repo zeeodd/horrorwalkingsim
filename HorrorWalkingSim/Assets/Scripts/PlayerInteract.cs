@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour
@@ -20,6 +21,12 @@ public class PlayerInteract : MonoBehaviour
     private Quaternion noteRot;
 
     public bool hasKey = false;
+    public bool hasLastKey = false;
+
+    public GameObject trigger1;
+    public GameObject trigger2;
+    public GameObject trigger3;
+    public GameObject triggerWall;
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +48,6 @@ public class PlayerInteract : MonoBehaviour
             // Check if the object is interactable
             if (objectHit.tag == "Interactive")
             {
-
                 // Then check the distance between the two objects
                 float dist = Vector3.Distance(objectHit.position, transform.position);
 
@@ -51,10 +57,17 @@ public class PlayerInteract : MonoBehaviour
                     objectHit.GetComponent<ObjectInteract>().isBeingInteractedWith = true;
                     lastHit = objectHit;
 
-                    if (hasKey && Input.GetKeyDown(KeyCode.Mouse0))
+                    if (hasKey && Input.GetKeyDown(KeyCode.Mouse0) && keyIcon.gameObject.activeSelf)
                     {
                         Destroy(objectHit.gameObject);
                         keyIcon.gameObject.SetActive(false);
+                        hasKey = false;
+                    }
+
+                    if (hasLastKey && Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        //TODO: End
+                        SceneManager.LoadScene("End");
                     }
                 }
                 else
@@ -68,11 +81,6 @@ public class PlayerInteract : MonoBehaviour
                 {
                     lastHit.GetComponent<ObjectInteract>().isBeingInteractedWith = false;
                 }
-            }
-
-            if (objectHit.tag == "Interactive")
-            {
-
             }
 
             if (objectHit.tag == "Note")
@@ -152,6 +160,29 @@ public class PlayerInteract : MonoBehaviour
             exitingMaze = true;
             Destroy(lastTrigger);
         }
+
+        if (exitingMaze)
+        {
+            if (trigger1 != null)
+            {
+                Destroy(trigger1);
+            }
+
+            if (trigger2 != null)
+            {
+                Destroy(trigger2);
+            }
+
+            if (trigger3 != null)
+            {
+                Destroy(trigger3);
+            }
+
+            if (triggerWall != null)
+            {
+                Destroy(triggerWall);
+            }
+        }
     }
 
     void AnimateOff()
@@ -165,4 +196,5 @@ public class PlayerInteract : MonoBehaviour
         playerCamera.GetComponent<Camera>().enabled = true;
         GetComponent<FirstPersonDrifter>().enabled = true;
     }
+
 }

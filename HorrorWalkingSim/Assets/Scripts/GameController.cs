@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
     public GameObject key;
     public GameObject shovel;
     public GameObject maze;
+    public GameObject dirt;
+    public GameObject gate;
     public GameObject door1;
     public GameObject door2;
     public Text text;
@@ -21,7 +23,7 @@ public class GameController : MonoBehaviour
     public GameObject trigger1;
 
     // Beat bools
-    private bool metEnemy = false;
+    private bool lost = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +37,9 @@ public class GameController : MonoBehaviour
         }
 
         shovel.gameObject.SetActive(false);
+        dirt.gameObject.SetActive(false);
+        gate.GetComponent<ObjectInteract>().enabled = false;
+
     }
 
     // Update is called once per frame
@@ -61,18 +66,31 @@ public class GameController : MonoBehaviour
             player.GetComponent<PlayerInteract>().tryingToMoveTowardEnemy = false;
         }
 
-       if (key == null && !shovel.activeSelf)
+        // As the payer picks up various inventory items
+        if (key == null && shovel != null && !shovel.activeSelf)
         {
             player.GetComponent<PlayerInteract>().hasKey = true;
-            //shovel.gameObject.SetActive(true);
         }
 
-        if (door1 == null)
+        if (door1 == null && shovel != null && !shovel.activeSelf)
         {
             Destroy(door2);
-        } else if (door2 == null)
+            shovel.gameObject.SetActive(true);
+        } else if (door2 == null && shovel != null && !shovel.activeSelf)
         {
             Destroy(door1);
+            shovel.gameObject.SetActive(true);
+        }
+
+        if (shovel == null && dirt != null && !dirt.activeSelf)
+        {
+            dirt.gameObject.SetActive(true);
+        }
+
+        if (dirt == null && gate != null)
+        {
+            player.GetComponent<PlayerInteract>().hasLastKey = true;
+            gate.GetComponent<ObjectInteract>().enabled = true;
         }
     }
 

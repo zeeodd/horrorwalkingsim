@@ -42,7 +42,7 @@ public class ObjectInteract : MonoBehaviour
         {
 
             // Modify the emission and interaction display text
-            GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white * 0.25f);
+            GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 0.5f);
             interactText.gameObject.SetActive(true);
             interactText.fontSize = 50;
 
@@ -69,10 +69,9 @@ public class ObjectInteract : MonoBehaviour
                     cursorTexture.GetComponent<RectTransform>().sizeDelta = new Vector2(curMinSize, curMinSize);
                     tCur = 0.0f;
 
-                    //TODO: INVENTORY FUNCTION
                     if (inventoryIcon != null)
                     {
-                        inventoryIcon.gameObject.SetActive(true); // This is temp
+                        inventoryIcon.gameObject.SetActive(true);
                     }
                 }
                 else
