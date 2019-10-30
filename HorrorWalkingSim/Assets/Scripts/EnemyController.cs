@@ -36,6 +36,8 @@ public class EnemyController : MonoBehaviour
     // Make the enemy a NavMesh agent
     NavMeshAgent agent;
 
+    private bool playSound;
+
     private enum States { Idle, Patrol, Suspicous, Chasing, Testing };
     private States currentState;
 
@@ -48,6 +50,7 @@ public class EnemyController : MonoBehaviour
 
         inVisionTime = inVisionTimeInit;
         walkingTime = walkingTimeInit;
+        playSound = false;
 
         // TODO: CHANGE THIS 
         currentState = States.Testing;
@@ -198,6 +201,7 @@ public class EnemyController : MonoBehaviour
 
             if (objectHit.tag == "Player")
             {
+                playSound = false;
                 currentState = States.Chasing;
             }
             else
@@ -215,7 +219,12 @@ public class EnemyController : MonoBehaviour
         print("CHASING NOW");
 
         //Play psycho sound
-        gameObject.GetComponent<AudioSource>().Play();
+        if (!playSound)
+        {
+            gameObject.GetComponent<AudioSource>().Play();
+            playSound = true;
+        }
+
         // Control speed and animation
         speed = r_speed;
         anim.SetBool("isIdle", false);
@@ -300,6 +309,7 @@ public class EnemyController : MonoBehaviour
                 if (objectHit.tag == "Player")
                 {
                     print("Hit Player");
+                    playSound = false;
                     currentState = States.Chasing;
                 }
             }
