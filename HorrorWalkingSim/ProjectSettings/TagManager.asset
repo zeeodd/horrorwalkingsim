@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - door
   - Note
+  - Inside
   layers:
   - Default
   - TransparentFX

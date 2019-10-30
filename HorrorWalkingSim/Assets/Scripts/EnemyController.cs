@@ -214,6 +214,8 @@ public class EnemyController : MonoBehaviour
         currentState = States.Chasing;
         print("CHASING NOW");
 
+        //Play psycho sound
+        gameObject.GetComponent<AudioSource>().Play();
         // Control speed and animation
         speed = r_speed;
         anim.SetBool("isIdle", false);
