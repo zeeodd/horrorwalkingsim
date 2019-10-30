@@ -27,6 +27,7 @@ public class PlayerInteract : MonoBehaviour
     public GameObject trigger2;
     public GameObject trigger3;
     public GameObject triggerWall;
+    public GameObject maze;
 
     // Start is called before the first frame update
     void Start()
@@ -125,6 +126,12 @@ public class PlayerInteract : MonoBehaviour
             if (triggerWall != null)
             {
                 Destroy(triggerWall);
+            }
+
+            foreach (Transform child in maze.transform)
+            {
+                //child.GetComponent<BoxCollider>().enabled = false;
+                child.GetComponent<BoxCollider>().isTrigger = true;
             }
         }
     }

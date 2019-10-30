@@ -15,8 +15,8 @@ public class CornSlowDown : MonoBehaviour
     {
         normalWalk = GetComponent<FirstPersonDrifter>().walkSpeed;
         normalRun = GetComponent<FirstPersonDrifter>().runSpeed;
-        slowWalk = GetComponent<FirstPersonDrifter>().walkSpeed / 2.0f;
-        slowRun = GetComponent<FirstPersonDrifter>().runSpeed / 2.0f;
+        slowWalk = GetComponent<FirstPersonDrifter>().walkSpeed / 3.5f;
+        slowRun = GetComponent<FirstPersonDrifter>().runSpeed / 3.5f;
     }
 
     private void OnTriggerEnter(Collider other)
