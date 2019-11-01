@@ -127,12 +127,6 @@ public class PlayerInteract : MonoBehaviour
             {
                 Destroy(triggerWall);
             }
-
-            foreach (Transform child in maze.transform)
-            {
-                //child.GetComponent<BoxCollider>().enabled = false;
-                child.GetComponent<BoxCollider>().isTrigger = true;
-            }
         }
     }
 
