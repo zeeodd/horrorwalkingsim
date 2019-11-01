@@ -37,6 +37,12 @@ public class EnemyController : MonoBehaviour
     NavMeshAgent agent;
 
     private bool playSound;
+    private bool playFootstep;
+
+    AudioSource audioSource;
+    AudioSource audioSource2;
+    public AudioClip psycho;
+    public AudioClip footstep;
 
     private enum States { Idle, Patrol, Suspicous, Chasing, Testing };
     private States currentState;
@@ -47,10 +53,18 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
         col_size = GetComponent<CapsuleCollider>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
+
+        audioSource2 = gameObject.AddComponent<AudioSource>();
+        audioSource2.clip = footstep;
+        audioSource2.loop = false;
+        audioSource2.playOnAwake = false;
+        audioSource2.volume = 1f;
 
         inVisionTime = inVisionTimeInit;
         walkingTime = walkingTimeInit;
         playSound = false;
+        playFootstep = false;
 
         // TODO: CHANGE THIS 
         currentState = States.Testing;
@@ -78,6 +92,16 @@ public class EnemyController : MonoBehaviour
         // Keep updating speed to controlled speed vars
         GetComponent<NavMeshAgent>().speed = speed;
 
+        if (playFootstep && !audioSource2.isPlaying)
+        {
+            if (currentState != States.Testing && currentState != States.Idle)
+            {
+                print("here");
+                audioSource2.volume = 0.35f - Vector3.Distance(player.transform.position, transform.position) / 90;
+                StartCoroutine(StepSFX());
+            }
+        }
+
     }
 
     void Idle()
@@ -99,6 +123,8 @@ public class EnemyController : MonoBehaviour
             inVisionTime = inVisionTimeInit;
         }
 
+        playFootstep = false;
+
         VisualScan();
         Invoke("ResetDestination", idleTime);
     }
@@ -108,6 +134,8 @@ public class EnemyController : MonoBehaviour
         // Change State
         currentState = States.Patrol;
         print("PATROL NOW");
+
+        playFootstep = true;
 
 
         // Control speed and animation
@@ -178,6 +206,8 @@ public class EnemyController : MonoBehaviour
         anim.SetBool("isWalking", false);
         anim.SetBool("isRunning", false);
 
+        playFootstep = true;
+
         // =============================
 
         // Keep chasing
@@ -218,10 +248,12 @@ public class EnemyController : MonoBehaviour
         currentState = States.Chasing;
         print("CHASING NOW");
 
+        playFootstep = true;
+
         //Play psycho sound
         if (!playSound)
         {
-            gameObject.GetComponent<AudioSource>().Play();
+            audioSource.PlayOneShot(psycho, 0.7F);
             playSound = true;
         }
 
@@ -255,6 +287,8 @@ public class EnemyController : MonoBehaviour
         anim.SetBool("isIdle", true);
         anim.SetBool("isWalking", false);
         anim.SetBool("isRunning", false);
+
+        playFootstep = false;
     }
 
     Vector3 GetNewDestination()
@@ -323,5 +357,17 @@ public class EnemyController : MonoBehaviour
         {
             SceneManager.LoadScene("Start");
         }
+    }
+
+    //private void StepSFX()
+    //{
+    //    audioSource2.PlayDelayed(0.5f);
+    //    audioSource2.Play();
+    //}
+
+    IEnumerator StepSFX()
+    {
+        yield return new WaitForSeconds(0.25f);
+        audioSource2.Play();
     }
 }
